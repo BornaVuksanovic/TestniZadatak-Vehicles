@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Project.Data/Project.Data.csproj" Id="394ae013-73b0-4ee4-ac38-6517e63009df" />
+  <Project Path="Project.MVC/Project.MVC.csproj" />
+  <Project Path="Project.Service/Project.Service.csproj" Id="3cf40fe4-7cfd-46bd-a4d8-f18a6907795f" />
+</Solution>
