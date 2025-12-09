@@ -10,6 +10,6 @@ namespace Project.Data.Entities
         public string Name { get; set; }
         public string Abrv {  get; set; } //abbreviation = skraćenica
 
-        public ICollection<VehicleModel> Models { get; set; } = new List<VehicleModel>
+        public ICollection<VehicleModel> Models { get; set; } = new List<VehicleModel>();
     }
 }
