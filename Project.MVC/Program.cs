@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
+using Project.Service.Interfaces;
+using Project.Service.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<VehicleDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("VehicleDb")));
+
+builder.Services.AddScoped<IVehicleService, VehicleService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
