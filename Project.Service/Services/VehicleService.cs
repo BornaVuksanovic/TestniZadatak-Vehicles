@@ -23,6 +23,37 @@ namespace Project.Service.Services
             return await _context.VehicleMakes.ToListAsync();
         }
 
+        public async Task<(IEnumerable<VehicleMake> Items, int TotalCount)>
+            GetMakesAsync(string? searchString, string? sortOrder, int pageNumber, int pageSize)
+        {
+            var query = _context.VehicleMakes.AsQueryable();
+
+            // pretraga filter
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                query = query.Where(m => m.Name.Contains(searchString));
+            }
+
+            // sortiranje
+
+            query = sortOrder switch
+            {
+                "name_desc" => query.OrderByDescending(m => m.Name),
+                "abrv" => query.OrderBy(m => m.Abrv),
+                "abrv_desc" => query.OrderByDescending(m => m.Abrv),
+                _ => query.OrderBy(m => m.Name) // defaultni
+            };
+
+            var totalCount =  await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
+        }
+
         public async Task<VehicleMake?> GetMakeByIdAsync(int id)
         {
             return await _context.VehicleMakes.FindAsync(id);

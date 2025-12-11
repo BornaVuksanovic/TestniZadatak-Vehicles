@@ -15,5 +15,8 @@ namespace Project.Service.Interfaces
         Task UpdateMakeAsync(VehicleMake make);
         Task DeleteMakeAsync(int id);
 
+        Task<(IEnumerable<VehicleMake> Items, int TotalCount)>
+            GetMakesAsync(string? searchString, string? sortOrder, int pageNumber, int pageSize);
+
     }
 }
