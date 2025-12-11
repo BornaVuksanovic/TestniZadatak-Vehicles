@@ -17,11 +17,36 @@ namespace Project.MVC.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? sortOrder, string? currentFilter, string? searchingString, int pageNumber=1)
         {
-            var makes = await _vehicleService.GetVehicleMakesAsync();
-            var model = _mapper.Map<List<VehicleMakeViewModel>>(makes);
-            return View(model);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AbrvSortParm"] = sortOrder == "abrv" ? "abrv_desc" : "abrv";
+
+            if (searchingString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchingString = currentFilter;
+            }
+
+            const int pageSize = 3;
+
+            var result = await _vehicleService.GetMakesAsync(searchingString, sortOrder, pageNumber, pageSize);
+
+            var vm = new MakeIndexViewModel
+            {
+                Makes = _mapper.Map<IEnumerable<VehicleMakeViewModel>>(result.Items),
+                CurrentFilter = searchingString,
+                CurrentSort = sortOrder,
+                PageNumber = pageNumber,
+                TotalPages = (int)Math.Ceiling(result.TotalCount / (double)pageSize),
+            };
+
+            return View(vm);
+
         }
 
         public IActionResult Create()

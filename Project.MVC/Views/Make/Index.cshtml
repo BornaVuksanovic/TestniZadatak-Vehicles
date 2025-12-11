@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Project.MVC.ViewModels.VehicleMakeViewModel>
+﻿@model Project.MVC.ViewModels.MakeIndexViewModel
     
 
 @{
@@ -7,6 +7,12 @@
 
 <h2>Vehicle Makes</h2>
 
+<form asp-controller="Make" asp-action="Index" method="get">
+    <input type="text" name="searchingString" value="@Model.CurrentFilter" />
+    <button type="submit">Search</button>
+</form>
+
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -14,13 +20,26 @@
 <table class="table">
     <thead>
         <tr>
-           <th> @Html.DisplayNameFor(m => m.First().Name)</th>
-           <th> @Html.DisplayNameFor(m => m.First().Abrv)</th>
+            <th> @Html.ActionLink("Name", "Index", 
+                new{
+                    sortOrder = ViewData["NameSortParm"],
+                    currentFilter = Model.CurrentFilter,
+                    pageNumber = Model.PageNumber
+                })
+            </th>
+            <th> @Html.ActionLink("Abrv", "Index",
+                new
+                {
+                    sortOrder = ViewData["AbrvSortParm"],
+                    currentFilter = Model.CurrentFilter,
+                    pageNumber = Model.PageNumber
+                })
+            </th>
            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Makes)
         {
             <tr>
                 <td>@item.Name</td>
@@ -32,5 +51,33 @@
         }
     </tbody>
 </table>
+
+<div>
+    Page @Model.PageNumber of @Model.TotalPages
+</div>
+
+<div>
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("Previous", "Index", new
+        {
+            pageNumber=Model.PageNumber - 1,
+            sortOrder = Model.CurrentSort,
+            currentFilter = Model.CurrentFilter
+         })
+        }
+    }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Next", "Index", new
+        {
+            pageNumber = Model.PageNumber+1,
+            sortOrder = Model.CurrentSort,
+            currentFilter = Model.CurrentFilter
+        })
+    }
+
+</div>
 
 
