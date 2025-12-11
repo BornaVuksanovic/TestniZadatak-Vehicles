@@ -1,5 +1,8 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+
 using Project.Data;
+using Project.MVC.MappingProfiles;
 using Project.Service.Interfaces;
 using Project.Service.Services;
 
@@ -10,6 +13,10 @@ builder.Services.AddDbContext<VehicleDbContext>(options => options.UseSqlServer(
 
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<VehicleProfile>();
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
