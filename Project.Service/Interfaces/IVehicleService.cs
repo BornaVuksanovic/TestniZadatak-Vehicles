@@ -18,5 +18,14 @@ namespace Project.Service.Interfaces
         Task<(IEnumerable<VehicleMake> Items, int TotalCount)>
             GetMakesAsync(string? searchString, string? sortOrder, int pageNumber, int pageSize);
 
+
+
+
+        Task<(IEnumerable<VehicleModel> Items, int TotalCount)>
+            GetModelsAsync(int? makeId, string? searchString, string? sortOrder, int pageNumber, int pageSize);
+        Task<VehicleModel?> GetModelByIdAsync(int id);
+        Task AddModelAsync(VehicleModel model);
+        Task UpdateModelAsync(VehicleModel model);
+        Task DeleteModelAsync(int id);
     }
 }

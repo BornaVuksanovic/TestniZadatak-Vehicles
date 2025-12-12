@@ -18,6 +18,7 @@ namespace Project.Service.Services
             _context = context;
         }
 
+
         public async Task<IEnumerable<VehicleMake>> GetVehicleMakesAsync()
         {
             return await _context.VehicleMakes.ToListAsync();
@@ -78,6 +79,69 @@ namespace Project.Service.Services
 
             _context.VehicleMakes.Remove(make);
             await _context.SaveChangesAsync();
+        }
+
+
+
+
+        public async Task<(IEnumerable<VehicleModel> Items, int TotalCount)>
+            GetModelsAsync(int? makeId, string? searchString, string? sortOrder, int pageNumber, int pageSize)
+        {
+            var query = _context.VehicleModels
+                .Include(m => m.Make)
+                .AsQueryable();
+
+            if (makeId.HasValue)
+            {
+                query = query.Where(m => m.MakeId == makeId.Value);
+            }
+
+            if(!string.IsNullOrWhiteSpace(searchString))
+                query = query.Where(m => m.Name.Contains(searchString));
+
+            query = sortOrder switch
+            {
+                "name_desc" => query.OrderByDescending(m => m.Name),
+                "abrv" => query.OrderBy(m => m.Abrv),
+                "abrv_desc" => query.OrderByDescending(m => m.Abrv),
+                _ => query.OrderBy(m => m.Name)
+            };
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return(items, totalCount);
+        }
+
+        public async Task<VehicleModel?> GetModelByIdAsync(int id)
+        {
+            return await _context.VehicleModels.FindAsync(id);
+        }
+
+        public async Task AddModelAsync(VehicleModel model)
+        {
+            _context.VehicleModels.Add(model);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateModelAsync(VehicleModel model)
+        { 
+            _context.VehicleModels.Update(model);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteModelAsync(int id)
+        {
+            var model = await _context.VehicleModels.FindAsync(id);
+            if (model != null)
+            {
+                _context.VehicleModels.Remove(model);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
