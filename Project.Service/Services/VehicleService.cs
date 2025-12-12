@@ -21,7 +21,7 @@ namespace Project.Service.Services
 
         public async Task<IEnumerable<VehicleMake>> GetVehicleMakesAsync()
         {
-            return await _context.VehicleMakes.ToListAsync();
+            return await _context.VehicleMakes.OrderBy(m => m.Name).ToListAsync();
         }
 
         public async Task<(IEnumerable<VehicleMake> Items, int TotalCount)>
@@ -104,6 +104,8 @@ namespace Project.Service.Services
                 "name_desc" => query.OrderByDescending(m => m.Name),
                 "abrv" => query.OrderBy(m => m.Abrv),
                 "abrv_desc" => query.OrderByDescending(m => m.Abrv),
+                "make" => query.OrderBy(x => x.Make.Name),
+                "make_desc" => query.OrderByDescending(x => x.Make.Name),
                 _ => query.OrderBy(m => m.Name)
             };
 

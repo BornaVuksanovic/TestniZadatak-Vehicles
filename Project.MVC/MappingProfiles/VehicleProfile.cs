@@ -10,7 +10,11 @@ namespace Project.MVC.MappingProfiles
         public VehicleProfile()
         {
             CreateMap<VehicleMake, VehicleMakeViewModel>().ReverseMap(); //Vehicel make
-            // Vehicle model
+            
+            CreateMap<VehicleModel, VehicleModelViewModel>()
+                .ForMember(d => d.MakeName,
+                opt => opt.MapFrom(s => s.Make.Name))
+                .ReverseMap();                                          // Vehicle model
         }
     }
 
