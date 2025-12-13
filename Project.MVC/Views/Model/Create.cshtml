@@ -1,0 +1,30 @@
+﻿@model Project.MVC.ViewModels.VehicleModelViewModel
+
+<h2>Create Model</h2>
+
+<form asp-action="Create" method="post">
+    <div>
+        <label asp-for="MakeId"></label>
+        <select asp-for="MakeId" asp-items="ViewBag.Makes"></select>
+    </div>
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+    </div>
+
+    <div>
+        <label asp-for="Abrv"></label>
+        <input asp-for="Abrv" />
+    </div>
+
+    <button type="submit">Save</button>
+</form>
+
+<a asp-action="Index">Back</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -64,6 +64,7 @@ namespace Project.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VehicleModelViewModel vm)
         {
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Makes = (await _service.GetVehicleMakesAsync())

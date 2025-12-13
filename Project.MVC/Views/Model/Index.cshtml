@@ -1,5 +1,101 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Project.MVC.ViewModels.ModelIndexViewModel
+
+<h2>Vehicle Models</h2>
+
+<form method="get">
+    <select name="makeId">
+        <option value="">-- All Makes --</option>
+        @foreach (var make in Model.Makes)
+        {
+            <option value="@make.Id" selected="@(make.Id == Model.MakeId)">
+                @make.Name
+            </option>
+        }
+    </select>
+
+    <input type="text" name="searchingString" value="@Model.SearchingString" placeholder="Search..." />
+
+    <button type="submit">Search</button>
+</form>
+
+<p>
+    <a asp-action="Create">Create new Model</a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@Model.NameSortParm"
+                   asp-route-makeId="@Model.MakeId"
+                   asp-route-searchingString="@Model.SearchingString">
+                    Name
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@Model.AbrvSortParm"
+                   asp-route-makeId="@Model.MakeId"
+                   asp-route-searchingString="@Model.SearchingString">
+                    Abrv
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@Model.MakeSortParm"
+                   asp-route-makeId="@Model.MakeId"
+                   asp-route-searchingString="@Model.SearchingString">
+                    Make
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Abrv</td>
+                <td>@item.MakeName</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    Page @Model.PageNumber of @Model.TotalPages
+</div>
+
+<div>
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("Previous", "Index", new
+        {
+            pageNumber = Model.PageNumber - 1,
+            sortOrder = Model.CurrentSort,
+            searchingString = Model.SearchingString,
+            makeId = Model.MakeId
+        })
+        }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Next", "Index", new
+        {
+            pageNumber = Model.PageNumber + 1,
+            sortOrder = Model.CurrentSort,
+            searchingString = Model.SearchingString,
+            makeId = Model.MakeId
+        })
+        }
+</div>
+
+
+

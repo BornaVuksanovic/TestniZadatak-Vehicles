@@ -1,0 +1,17 @@
+﻿@model Project.MVC.ViewModels.VehicleModelViewModel
+
+<h2>Delete Model</h2>
+
+
+<ul>
+    <li>Name: @Model.Name</li>
+    <li>Abrv: @Model.Abrv</li>
+    <li>Make: @Model.MakeName</li>
+</ul>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit">Delete</button>
+</form>
+
+<a asp-action="Index">Cancel</a>

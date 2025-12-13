@@ -121,7 +121,7 @@ namespace Project.Service.Services
 
         public async Task<VehicleModel?> GetModelByIdAsync(int id)
         {
-            return await _context.VehicleModels.FindAsync(id);
+            return await _context.VehicleModels.Include(x => x.Make).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task AddModelAsync(VehicleModel model)

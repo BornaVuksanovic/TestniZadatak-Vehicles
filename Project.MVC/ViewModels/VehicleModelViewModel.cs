@@ -16,7 +16,7 @@ namespace Project.MVC.ViewModels
         [Required]
         public string Abrv { get; set; }
 
-        public string MakeName { get; set; }
+        public string? MakeName { get; set; }
 
     }
 }
