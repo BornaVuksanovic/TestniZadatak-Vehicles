@@ -2,7 +2,7 @@
 {
     public class ModelIndexViewModel
     {
-        public IEnumerable<ModelIndexViewModel> Items { get; set; } = new List<ModelIndexViewModel>();
+        public IEnumerable<VehicleModelViewModel> Items { get; set; } = new List<VehicleModelViewModel>();
 
         public int? MakeId { get; set; }
         public string? SearchingString { get; set; }
